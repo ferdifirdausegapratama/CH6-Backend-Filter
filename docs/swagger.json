@@ -1,0 +1,259 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Shop API",
+      "description": "API documentation for retrieving shop and product data"
+    },
+    "host": "localhost:3000",
+    "basePath": "/api",
+    "schemes": ["http"],
+    "paths": {
+      "/shops": {
+        "get": {
+          "summary": "Get list of shops",
+          "description": "Retrieve a list of shops with product details",
+          "responses": {
+            "200": {
+              "description": "Successfully retrieved shop data",
+              "schema": {
+                "$ref": "#/definitions/ShopResponse"
+              }
+            }
+          }
+        },
+        "post": {
+          "summary": "Create a new shop",
+          "description": "Endpoint to create a new shop",
+          "operationId": "createShop",
+          "consumes": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Data for the shop to be created",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Shop123"
+                  },
+                  "userId": {
+                    "type": "integer",
+                    "example": 10
+                  },
+                  "adminEmail": {
+                    "type": "string",
+                    "example": "admin@example.com"
+                  }
+                },
+                "required": ["name", "userId", "adminEmail"]
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Successfully created new shop",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "Success"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Successfully created new Shop"
+                  },
+                  "isSuccess": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "newShop": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 113
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Shop123"
+                          },
+                          "userId": {
+                            "type": "integer",
+                            "example": 10
+                          },
+                          "adminEmail": {
+                            "type": "string",
+                            "example": "admin@example.com"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2024-10-29T11:04:43.037Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2024-10-29T11:04:43.037Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid input data"
+            },
+            "500": {
+              "description": "Internal Server Error",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "Error"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Internal Server Error"
+                  },
+                  "isSuccess": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "errorDetails": {
+                    "type": "string",
+                    "example": "Database connection failed"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "ShopResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "Success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Successfully retrieved shop data"
+          },
+          "isSuccess": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "$ref": "#/definitions/Data"
+          }
+        }
+      },
+      "Data": {
+        "type": "object",
+        "properties": {
+          "totalData": {
+            "type": "integer",
+            "example": 100
+          },
+          "shops": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Shop"
+            }
+          },
+          "pagination": {
+            "$ref": "#/definitions/Pagination"
+          }
+        }
+      },
+      "Shop": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Cole Group"
+          },
+          "adminEmail": {
+            "type": "string",
+            "nullable": true,
+            "example": null
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Product"
+            }
+          },
+          "user": {
+            "$ref": "#/definitions/User"
+          }
+        }
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Unbranded Metal Pants"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "https://ik.imagekit.io/imamth/Profile-17-1729202156932_ieaMdNeZB.png?updatedAt=1729202158471"
+            }
+          },
+          "stock": {
+            "type": "integer",
+            "example": 21
+          },
+          "price": {
+            "type": "integer",
+            "example": 13237
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Mr. Frederick Reilly Sr."
+          }
+        }
+      },
+      "Pagination": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "example": 1
+          },
+          "size": {
+            "type": "integer",
+            "example": 10
+          },
+          "totalPages": {
+            "type": "integer",
+            "example": 10
+          }
+        }
+      }
+    }
+  }
+  
